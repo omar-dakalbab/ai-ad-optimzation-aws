@@ -1,0 +1,102 @@
+# ============================================================
+# Amazon Ads AI - Render Blueprint
+# ============================================================
+# Deploy: Connect this repo in the Render dashboard and
+#         Render will auto-detect this file.
+# Docs:   https://docs.render.com/blueprint-spec
+# ============================================================
+
+databases:
+  - name: amazon-ads-ai-db
+    plan: starter
+    databaseName: amazon_ads_ai
+    user: postgres
+    postgresMajorVersion: "15"
+
+services:
+  # --- FastAPI Application ---
+  - type: web
+    name: amazon-ads-ai-api
+    runtime: docker
+    plan: starter
+    dockerfilePath: ./Dockerfile
+    dockerCommand: uvicorn src.api.main:app --host 0.0.0.0 --port 8000
+    envVars:
+      - key: PORT
+        value: "8000"
+      - key: AAI_DATABASE_URL
+        fromDatabase:
+          name: amazon-ads-ai-db
+          property: connectionString
+      - key: AAI_REDIS_URL
+        fromService:
+          name: amazon-ads-ai-redis
+          type: redis
+          property: connectionString
+      - key: AAI_DRY_RUN
+        value: "true"
+      - key: AAI_AMAZON_ADS_CLIENT_ID
+        sync: false
+      - key: AAI_AMAZON_ADS_CLIENT_SECRET
+        sync: false
+      - key: AAI_AMAZON_ADS_REFRESH_TOKEN
+        sync: false
+      - key: AAI_AMAZON_ADS_PROFILE_ID
+        sync: false
+      - key: AAI_AMAZON_ADS_REGION
+        value: "NA"
+      - key: AAI_SP_API_REFRESH_TOKEN
+        sync: false
+      - key: AAI_SP_API_LWA_APP_ID
+        sync: false
+      - key: AAI_SP_API_LWA_CLIENT_SECRET
+        sync: false
+      - key: AAI_SP_API_AWS_ACCESS_KEY
+        sync: false
+      - key: AAI_SP_API_AWS_SECRET_KEY
+        sync: false
+      - key: AAI_SP_API_ROLE_ARN
+        sync: false
+      - key: AAI_MARKETPLACE_ID
+        value: "ATVPDKIKX0DER"
+      - key: AAI_TARGET_ACOS
+        value: "0.25"
+      - key: AAI_MIN_ROAS
+        value: "3.0"
+
+  # --- Streamlit Dashboard ---
+  - type: web
+    name: amazon-ads-ai-dashboard
+    runtime: docker
+    plan: starter
+    dockerfilePath: ./Dockerfile
+    dockerCommand: streamlit run src/dashboard/app.py --server.port 8501 --server.address 0.0.0.0
+    envVars:
+      - key: PORT
+        value: "8501"
+      - key: AAI_DATABASE_URL
+        fromDatabase:
+          name: amazon-ads-ai-db
+          property: connectionString
+
+  # --- MLflow Tracking Server ---
+  - type: web
+    name: amazon-ads-ai-mlflow
+    runtime: docker
+    plan: starter
+    dockerfilePath: ./Dockerfile
+    dockerCommand: mlflow server --host 0.0.0.0 --port 5000 --backend-store-uri sqlite:///mlflow/mlflow.db --default-artifact-root /mlflow/artifacts
+    disk:
+      name: mlflow-data
+      mountPath: /mlflow
+      sizeGB: 1
+    envVars:
+      - key: PORT
+        value: "5000"
+
+  # --- Redis Cache ---
+  - type: redis
+    name: amazon-ads-ai-redis
+    plan: starter
+    maxmemoryPolicy: allkeys-lru
+    ipAllowList: []

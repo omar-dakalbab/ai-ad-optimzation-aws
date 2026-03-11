@@ -55,6 +55,8 @@ from src.features.feature_engineering import (
     CONVERSION_MODEL_FEATURES,
     REVENUE_MODEL_FEATURES,
 )
+from contextlib import contextmanager
+
 from configs.settings import Settings
 
 logger = structlog.get_logger()
@@ -64,12 +66,27 @@ MODEL_DIR = Path("models/artifacts")
 MODEL_DIR.mkdir(parents=True, exist_ok=True)
 
 
+@contextmanager
+def _optional_mlflow_run(active: bool, **kwargs):
+    """Wrap mlflow.start_run; yields a no-op when MLflow is unavailable."""
+    if active:
+        with mlflow.start_run(**kwargs) as run:
+            yield run
+    else:
+        yield None
+
+
 class ModelTrainer:
     """Trains and evaluates all ML models."""
 
     def __init__(self):
-        mlflow.set_tracking_uri(settings.mlflow_tracking_uri)
-        mlflow.set_experiment(settings.mlflow_experiment_name)
+        try:
+            mlflow.set_tracking_uri(settings.mlflow_tracking_uri)
+            mlflow.set_experiment(settings.mlflow_experiment_name)
+            self._mlflow_available = True
+        except Exception:
+            logger.warning("mlflow_unavailable, training will proceed without tracking")
+            self._mlflow_available = False
 
     def train_all_models(self, training_date: date = None):
         """Train all models. Called weekly by Airflow."""
@@ -122,7 +139,7 @@ class ModelTrainer:
         tscv = TimeSeriesSplit(n_splits=n_splits)
         metrics_list = []
 
-        with mlflow.start_run(run_name=f"click_model_{training_date}"):
+        with _optional_mlflow_run(self._mlflow_available, run_name=f"click_model_{training_date}"):
             for fold, (train_idx, val_idx) in enumerate(tscv.split(X)):
                 X_train, X_val = X.iloc[train_idx], X.iloc[val_idx]
                 y_train, y_val = y.iloc[train_idx], y.iloc[val_idx]
@@ -170,18 +187,18 @@ class ModelTrainer:
             final_model.fit(X, y)
 
             avg_auc = np.mean([m["auc"] for m in metrics_list]) if metrics_list else 0.5
-            mlflow.log_metric("avg_auc", avg_auc)
-            mlflow.log_param("n_features", len(CLICK_MODEL_FEATURES))
-            mlflow.log_param("n_samples", len(X))
-            mlflow.lightgbm.log_model(final_model, "click_model")
+
+            if self._mlflow_available:
+                mlflow.log_metric("avg_auc", avg_auc)
+                mlflow.log_param("n_features", len(CLICK_MODEL_FEATURES))
+                mlflow.log_param("n_samples", len(X))
+                mlflow.lightgbm.log_model(final_model, "click_model")
+                importance = dict(zip(CLICK_MODEL_FEATURES, final_model.feature_importances_))
+                mlflow.log_dict(importance, "feature_importance.json")
 
             # Save locally
             model_path = MODEL_DIR / "click_model.joblib"
             joblib.dump(final_model, model_path)
-
-            # Log feature importances
-            importance = dict(zip(CLICK_MODEL_FEATURES, final_model.feature_importances_))
-            mlflow.log_dict(importance, "feature_importance.json")
 
         self._log_model_performance("click_model", training_date, "auc_roc", avg_auc, len(X))
         logger.info("click_model_trained", auc=avg_auc)
@@ -223,7 +240,7 @@ class ModelTrainer:
         tscv = TimeSeriesSplit(n_splits=n_splits)
         metrics_list = []
 
-        with mlflow.start_run(run_name=f"conversion_model_{training_date}"):
+        with _optional_mlflow_run(self._mlflow_available, run_name=f"conversion_model_{training_date}"):
             for fold, (train_idx, val_idx) in enumerate(tscv.split(X)):
                 X_train, X_val = X.iloc[train_idx], X.iloc[val_idx]
                 y_train, y_val = y.iloc[train_idx], y.iloc[val_idx]
@@ -271,11 +288,13 @@ class ModelTrainer:
             final_model.fit(X, y)
 
             avg_auc = np.mean([m["auc"] for m in metrics_list]) if metrics_list else 0.5
-            mlflow.log_metric("avg_auc", avg_auc)
-            if metrics_list:
-                mlflow.log_metric("avg_precision", np.mean([m["precision"] for m in metrics_list]))
-                mlflow.log_metric("avg_recall", np.mean([m["recall"] for m in metrics_list]))
-            mlflow.xgboost.log_model(final_model, "conversion_model")
+
+            if self._mlflow_available:
+                mlflow.log_metric("avg_auc", avg_auc)
+                if metrics_list:
+                    mlflow.log_metric("avg_precision", np.mean([m["precision"] for m in metrics_list]))
+                    mlflow.log_metric("avg_recall", np.mean([m["recall"] for m in metrics_list]))
+                mlflow.xgboost.log_model(final_model, "conversion_model")
 
             model_path = MODEL_DIR / "conversion_model.joblib"
             joblib.dump(final_model, model_path)
@@ -324,7 +343,7 @@ class ModelTrainer:
         tscv = TimeSeriesSplit(n_splits=n_splits)
         metrics_list = []
 
-        with mlflow.start_run(run_name=f"revenue_model_{training_date}"):
+        with _optional_mlflow_run(self._mlflow_available, run_name=f"revenue_model_{training_date}"):
             for fold, (train_idx, val_idx) in enumerate(tscv.split(X)):
                 X_train, X_val = X.iloc[train_idx], X.iloc[val_idx]
                 y_train, y_val = y.iloc[train_idx], y.iloc[val_idx]
@@ -359,9 +378,11 @@ class ModelTrainer:
 
             avg_rmse = np.mean([m["rmse"] for m in metrics_list]) if metrics_list else 0
             avg_r2 = np.mean([m["r2"] for m in metrics_list]) if metrics_list else 0
-            mlflow.log_metric("avg_rmse", avg_rmse)
-            mlflow.log_metric("avg_r2", avg_r2)
-            mlflow.sklearn.log_model(final_model, "revenue_model")
+
+            if self._mlflow_available:
+                mlflow.log_metric("avg_rmse", avg_rmse)
+                mlflow.log_metric("avg_r2", avg_r2)
+                mlflow.sklearn.log_model(final_model, "revenue_model")
 
             model_path = MODEL_DIR / "revenue_model.joblib"
             joblib.dump(final_model, model_path)
