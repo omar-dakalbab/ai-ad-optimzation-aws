@@ -1,0 +1,23 @@
+artifact_path: file:///Users/omardakelbab/Desktop/amazon-ads-ai/mlruns/388468250005443919/models/m-4339dd1bb0eb4ad3947a3b1f80771be8/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.11.15
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.8.0
+    skops_trusted_types: null
+mlflow_version: 3.10.1
+model_id: m-4339dd1bb0eb4ad3947a3b1f80771be8
+model_size_bytes: 100859
+model_uuid: m-4339dd1bb0eb4ad3947a3b1f80771be8
+prompts: null
+run_id: e392257538c646d0bd0e4908237cb792
+utc_time_created: '2026-03-10 22:12:05.426479'

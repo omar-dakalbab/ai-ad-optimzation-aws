@@ -1,0 +1,22 @@
+artifact_path: file:///Users/omardakelbab/Desktop/amazon-ads-ai/mlruns/388468250005443919/models/m-6237269ea26f4fc0a0f2a92bd54babe8/artifacts
+flavors:
+  python_function:
+    data: model.ubj
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.xgboost
+    python_version: 3.11.15
+  xgboost:
+    code: null
+    data: model.ubj
+    model_class: xgboost.sklearn.XGBClassifier
+    model_format: ubj
+    xgb_version: 3.2.0
+mlflow_version: 3.10.1
+model_id: m-6237269ea26f4fc0a0f2a92bd54babe8
+model_size_bytes: 212914
+model_uuid: m-6237269ea26f4fc0a0f2a92bd54babe8
+prompts: null
+run_id: 7f1b29e7f85c4b80a60e80034f689dec
+utc_time_created: '2026-03-11 17:13:27.131512'

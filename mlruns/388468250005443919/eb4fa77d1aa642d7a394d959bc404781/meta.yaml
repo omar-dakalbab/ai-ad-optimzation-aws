@@ -1,0 +1,14 @@
+artifact_uri: file:///Users/omardakelbab/Desktop/amazon-ads-ai/mlruns/388468250005443919/eb4fa77d1aa642d7a394d959bc404781/artifacts
+end_time: 1773180278471
+entry_point_name: ''
+experiment_id: '388468250005443919'
+lifecycle_stage: active
+run_id: eb4fa77d1aa642d7a394d959bc404781
+run_name: click_model_2026-03-11
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1773180278441
+status: 4
+tags: []
+user_id: omardakelbab

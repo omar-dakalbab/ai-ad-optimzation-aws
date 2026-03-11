@@ -1,0 +1,10 @@
+artifact_location: file:///Users/omardakelbab/Desktop/amazon-ads-ai/mlruns/388468250005443919/models/m-ddc87289892e41618aa95566113ba2c0/artifacts
+creation_timestamp: 1773249203010
+experiment_id: '388468250005443919'
+last_updated_timestamp: 1773249206435
+model_id: m-ddc87289892e41618aa95566113ba2c0
+model_type: null
+name: click_model
+source_run_id: b5c1107f88a947faa46622e54ac3add2
+status: 2
+status_message: null

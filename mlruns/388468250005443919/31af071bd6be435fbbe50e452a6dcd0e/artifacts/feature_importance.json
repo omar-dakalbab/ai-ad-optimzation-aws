@@ -1,0 +1,23 @@
+{
+  "ctr_7d": "0",
+  "ctr_14d": "0",
+  "ctr_30d": "0",
+  "impressions_7d": "0",
+  "impressions_30d": "0",
+  "ctr_trend": "0",
+  "impression_trend": "0",
+  "product_price": "0",
+  "product_rating": "0",
+  "product_review_count": "0",
+  "keyword_length": "0",
+  "match_type_encoded": "0",
+  "keyword_age_days": "0",
+  "day_of_week": "0",
+  "is_weekend": "0",
+  "month": "0",
+  "is_prime_day": "0",
+  "is_holiday_season": "0",
+  "impression_share_est": "0",
+  "avg_position_est": "0",
+  "cpc_7d": "0"
+}

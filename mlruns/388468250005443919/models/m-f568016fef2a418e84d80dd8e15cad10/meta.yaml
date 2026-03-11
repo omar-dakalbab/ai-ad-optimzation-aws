@@ -1,0 +1,10 @@
+artifact_location: file:///Users/omardakelbab/Desktop/amazon-ads-ai/mlruns/388468250005443919/models/m-f568016fef2a418e84d80dd8e15cad10/artifacts
+creation_timestamp: 1773180433414
+experiment_id: '388468250005443919'
+last_updated_timestamp: 1773180436100
+model_id: m-f568016fef2a418e84d80dd8e15cad10
+model_type: null
+name: revenue_model
+source_run_id: d2232a037a7947078ce60a60cb8272d7
+status: 2
+status_message: null

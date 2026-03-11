@@ -1,0 +1,215 @@
+AMAZON ADS AI OPTIMIZER - HOW IT WORKS
+=======================================
+
+WHAT IS THIS?
+-------------
+This is an AI system that manages your Amazon Sponsored Products advertising
+for you. Instead of you manually adjusting bids, budgets, and keywords every
+day in Amazon Seller Central, this system does it automatically -- smarter and
+faster than a human can.
+
+Think of it like hiring a full-time PPC manager who works 24/7, never makes
+emotional decisions, and learns from every dollar you spend.
+
+
+WHAT DOES IT ACTUALLY DO?
+-------------------------
+
+1. CREATES YOUR CAMPAIGNS
+
+   When you add a new product, the system automatically builds a proven
+   3-campaign structure for it:
+
+   - An AUTO campaign: Lets Amazon find relevant search terms for your
+     product. This is your discovery engine -- it casts a wide net to find
+     what shoppers are actually searching for.
+
+   - A MANUAL EXACT campaign: Targets specific keywords with exact matching.
+     These are your money-makers -- high intent, best return on ad spend.
+
+   - A MANUAL BROAD campaign: Targets keywords with broad matching to
+     discover new search terms you might be missing.
+
+   The system figures out the starting bids from your product's profit margin.
+   If your earbuds make $8 profit per sale, it calculates what you can afford
+   to pay per click and still hit your target profitability. New campaigns
+   start paused by default so you can review them before they go live.
+
+   It also generates the initial keywords automatically from your product
+   title. For example, "Wireless Bluetooth Earbuds with Charging Case" becomes
+   keywords like "wireless bluetooth earbuds", "bluetooth earbuds",
+   "wireless earbuds", "charging case", etc.
+
+
+2. ADJUSTS YOUR BIDS EVERY DAY
+
+   Every morning at 6 AM, the system looks at how every keyword performed and
+   uses machine learning to predict what will happen next. Then it adjusts
+   bids based on those predictions:
+
+   - Keywords making you money? It increases the bid to get more traffic.
+   - Keywords losing money? It lowers the bid to reduce waste.
+   - Keywords getting lots of clicks but zero sales? It drops the bid to the
+     minimum or pauses them entirely.
+
+   The AI doesn't just look at yesterday. It analyzes trends over 7, 14, and
+   30 days. A keyword that's been steadily improving gets treated differently
+   than one that had one lucky day.
+
+   SAFETY LIMITS:
+   - Bids can only go up by 30% or down by 40% in a single day (no wild swings)
+   - There's a floor of $0.10 and a ceiling of $15.00
+   - Any bid over $8.00 gets flagged for your approval first
+   - Everything runs in "dry run" mode by default -- it shows you what it
+     WOULD do without actually doing it, until you turn on live mode
+
+
+3. MOVES YOUR BUDGET TO WHERE IT WORKS BEST
+
+   If you're running 10 campaigns, some will perform better than others. The
+   system automatically shifts budget from underperforming campaigns to the
+   ones with the best return.
+
+   Example:
+     Campaign A is getting $4 back for every $1 spent (great)
+     Campaign B is getting $1.50 back for every $1 spent (not great)
+     --> Move some of Campaign B's budget to Campaign A
+
+   It moves a maximum of 15% of any campaign's budget per day, so changes
+   are gradual and safe.
+
+
+4. FINDS NEW KEYWORDS AND KILLS BAD ONES
+
+   HARVESTING (finding winners):
+   The auto and broad campaigns discover search terms that real shoppers use.
+   When a search term gets at least 2 orders with a good conversion rate and
+   profitable ACoS, the system automatically adds it as an exact-match keyword
+   in your manual campaign. This is how your keyword list grows smarter over
+   time.
+
+   NEGATING (stopping waste):
+   When a search term gets 15+ clicks and $20+ in spend with zero sales, the
+   system adds it as a negative keyword so you stop paying for it. This is
+   like plugging holes in a leaky bucket.
+
+   PAUSING (cutting losses):
+   Keywords that get 50+ clicks with zero orders, or consistently run at 2x
+   your target ACoS over 30 days, get paused. They've had their chance.
+
+
+HOW DOES THE AI LEARN?
+----------------------
+The system has machine learning models that predict three things for every
+keyword, every day:
+
+  1. Click-through rate: How likely shoppers are to click your ad
+  2. Conversion rate: How likely clickers are to buy
+  3. Revenue per sale: How much you'll make from a conversion
+
+It uses 90 days of your actual performance data to train these models, and
+retrains them every Sunday with the latest data. The predictions get better
+over time as it accumulates more data about your specific products and market.
+
+The AI considers dozens of factors:
+  - How the keyword performed over the last 7, 14, and 30 days
+  - Whether performance is trending up or down
+  - Your product's price, profit margin, rating, and review count
+  - Current inventory levels (no point advertising if you're about to run out)
+  - Day of the week and seasonality (weekends behave differently)
+  - Whether it's Prime Day or holiday season
+  - How competitive the keyword appears to be
+
+
+WHAT DATA DOES IT PULL FROM AMAZON?
+------------------------------------
+Every day, the system connects to two Amazon APIs:
+
+  From Amazon Ads:
+  - Your campaign structure (campaigns, ad groups, keywords)
+  - Daily performance numbers (impressions, clicks, spend, orders, sales)
+  - Search term reports (what people actually typed before clicking your ad)
+
+  From Seller Central (SP-API):
+  - Your product catalog (titles, categories, prices)
+  - Order data (sales, revenue)
+  - Inventory levels (FBA stock)
+  - Sales and traffic reports
+
+There's a 2-day lag on Amazon's advertising data (this is an Amazon limitation,
+not ours), so the system always works with data from 2 days ago.
+
+
+THE DAILY ROUTINE
+-----------------
+Here's what happens every day at 6 AM automatically:
+
+  Step 1: Pull fresh data from Amazon
+  Step 2: Create campaigns for any new products that don't have ads yet
+  Step 3: Crunch the numbers (compute features for the ML models)
+  Step 4: Run the AI predictions
+  Step 5: (In parallel)
+           - Calculate new bid recommendations
+           - Calculate budget reallocation
+           - Run keyword harvesting, negation, and pausing
+  Step 6: Apply all the changes to your Amazon account
+
+If anything fails, it retries twice with a 5-minute delay. If it still fails,
+you get an email alert.
+
+
+THE DASHBOARD
+-------------
+There's a visual dashboard where you can see everything that's happening:
+
+  - Account Performance: Spend, sales, ACoS, and ROAS charted over time
+  - Bid Changes: Every bid change the AI made, the old bid, new bid, and why
+  - Model Accuracy: How well the AI's predictions matched reality
+  - Budget Allocation: Where money is flowing between campaigns
+  - Top Predictions: The AI's highest-confidence keyword opportunities
+
+
+SAFETY AND CONTROL
+------------------
+The system is designed to be cautious:
+
+  - DRY RUN MODE (on by default): Shows you what it would do without doing it.
+    You have to explicitly turn this off when you're ready to go live.
+
+  - APPROVAL GATE: Any bid above $8.00 needs your manual approval.
+
+  - GRADUAL CHANGES: Maximum 30% bid increase or 40% decrease per day.
+    Maximum 15% budget shift per day. No sudden dramatic moves.
+
+  - FULL AUDIT TRAIL: Every single change is logged with the reason, the old
+    value, the new value, and when it was applied. You can always see exactly
+    what the AI did and why.
+
+  - ROLLBACK: Because all previous bids are stored, you can reverse any
+    change.
+
+  - MINIMUM BUDGETS: Campaign budgets never drop below $5/day.
+    Keyword bids never drop below $0.10.
+
+  - SPEND CAP: Total daily spend can only increase by 20% maximum.
+
+
+KEY NUMBERS YOU SHOULD KNOW
+----------------------------
+  Target ACoS:              25% (for every $1 in sales, you spend $0.25 on ads)
+  Minimum acceptable ROAS:  3.0x (you get $3 back for every $1 spent)
+  Default new product budget: $50/day (split across the 3 campaigns)
+  Minimum bid:              $0.10
+  Maximum bid:              $15.00
+  Approval required above:  $8.00
+
+All of these can be changed in the settings.
+
+
+IN PLAIN ENGLISH
+----------------
+You list products on Amazon. This system watches how your ads perform, learns
+what works and what doesn't, and automatically adjusts everything to make you
+more money while spending less on ads. It creates the campaigns, picks the
+keywords, sets the bids, moves the budgets, kills the waste, and scales the
+winners -- every single day, without you having to touch Amazon's ad console.

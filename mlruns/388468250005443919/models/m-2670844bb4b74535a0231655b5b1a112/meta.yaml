@@ -1,0 +1,10 @@
+artifact_location: file:///Users/omardakelbab/Desktop/amazon-ads-ai/mlruns/388468250005443919/models/m-2670844bb4b74535a0231655b5b1a112/artifacts
+creation_timestamp: 1773180722474
+experiment_id: '388468250005443919'
+last_updated_timestamp: 1773180725194
+model_id: m-2670844bb4b74535a0231655b5b1a112
+model_type: null
+name: conversion_model
+source_run_id: c85b9f3a4a584d8581e25157eb4a5775
+status: 2
+status_message: null

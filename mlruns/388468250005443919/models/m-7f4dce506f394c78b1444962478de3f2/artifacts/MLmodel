@@ -1,0 +1,23 @@
+artifact_path: file:///Users/omardakelbab/Desktop/amazon-ads-ai/mlruns/388468250005443919/models/m-7f4dce506f394c78b1444962478de3f2/artifacts
+flavors:
+  lightgbm:
+    code: null
+    data: model.pkl
+    lgb_version: 4.6.0
+    model_class: lightgbm.sklearn.LGBMClassifier
+    serialization_format: cloudpickle
+    skops_trusted_types: null
+  python_function:
+    data: model.pkl
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.lightgbm
+    python_version: 3.11.15
+mlflow_version: 3.10.1
+model_id: m-7f4dce506f394c78b1444962478de3f2
+model_size_bytes: 5467
+model_uuid: m-7f4dce506f394c78b1444962478de3f2
+prompts: null
+run_id: a8941f4d287142d5adbf7da351b8f2a0
+utc_time_created: '2026-03-10 22:06:35.753570'
