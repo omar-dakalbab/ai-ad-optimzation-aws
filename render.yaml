@@ -10,7 +10,6 @@ databases:
   - name: amazon-ads-ai-db
     plan: starter
     databaseName: amazon_ads_ai
-    user: postgres
     postgresMajorVersion: "15"
 
 services:
