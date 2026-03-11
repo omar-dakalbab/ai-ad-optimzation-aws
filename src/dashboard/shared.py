@@ -36,8 +36,7 @@ def render_sidebar():
     st.sidebar.header("Danger Zone")
     if st.sidebar.button("Clear All Data", type="primary"):
         # Close any other open dialogs first
-        st.session_state.pop("show_predictions_popup", None)
-        st.session_state.pop("show_pipeline_popup", None)
+        st.session_state.pop("show_results_dialog", None)
         st.session_state["confirm_clear"] = True
 
     if st.session_state.get("confirm_clear"):
