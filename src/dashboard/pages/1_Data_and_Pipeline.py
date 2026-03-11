@@ -257,9 +257,8 @@ with col_ml3:
                 from src.models.inference import ModelInference
                 inference = ModelInference()
                 inference.predict_all_keywords(prediction_date=date.today())
-                st.session_state["show_predictions_popup"] = True
+                st.session_state["show_results_dialog"] = "predictions"
                 st.session_state.pop("confirm_clear", None)
-                st.session_state.pop("show_pipeline_popup", None)
             except Exception as e:
                 st.error(f"Prediction failed: {e}")
 
